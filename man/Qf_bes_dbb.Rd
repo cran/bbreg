@@ -4,22 +4,25 @@
 \alias{Qf_bes_dbb}
 \title{Qf_bes_dbb}
 \usage{
-Qf_bes_dbb(lam, wz, z, v, mu)
+Qf_bes_dbb(lam, wz, z, v, mu, link.precision)
 }
 \arguments{
 \item{lam}{coefficients in lambda related to the covariates in v.}
 
-\item{wz}{parameter wz representing E(1/W[i]|Z[i] = z[i], theta).}
+\item{wz}{parameter wz representing E(1/W_i|Z_i = z_i, theta).}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
 
 \item{mu}{mean parameter (vector having the same size of z).}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Scalar representing the output of this auxiliary function for the bessel case.
 }
 \description{
-Auxiliary function (adapted for the discrimination test between bessel and beta - DBB) required in the Expectation-Maximization algorithm (Q-function related to the bessel model).
+Q-function related to the bessel model. This function was adapted for the discrimination test between bessel and beta (DBB) required in the Expectation-Maximization algorithm.
 }

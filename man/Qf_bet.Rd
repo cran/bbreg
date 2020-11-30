@@ -4,22 +4,28 @@
 \alias{Qf_bet}
 \title{Qf_bet}
 \usage{
-Qf_bet(theta, phiold, z, x, v)
+Qf_bet(theta, phiold, z, x, v, link.mean, link.precision)
 }
 \arguments{
 \item{theta}{vector of parameters (all coefficients).}
 
 \item{phiold}{previous value of the precision parameter (phi).}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Scalar representing the output of this auxiliary function for the beta case.
 }
 \description{
-Auxiliary function required in the Expectation-Maximization algorithm (Q-function related to the beta model).
+Q-function related to the beta model. This function is required in the Expectation-Maximization algorithm.
 }

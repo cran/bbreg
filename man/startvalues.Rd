@@ -4,14 +4,17 @@
 \alias{startvalues}
 \title{startvalues}
 \usage{
-startvalues(z, x, v)
+startvalues(z, x, v, link.mean)
 }
 \arguments{
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
 }
 \description{
 Function providing initial values for the Expectation-Maximization algorithm.

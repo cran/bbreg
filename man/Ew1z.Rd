@@ -7,7 +7,7 @@
 Ew1z(z, mu, phi)
 }
 \arguments{
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{mu}{mean parameter (vector having the same size of z).}
 
@@ -18,6 +18,6 @@ Vector of expected values.
 }
 \description{
 Auxiliary function required in the Expectation-Maximization algorithm (E-step) and in the calculation of the
-Fisher information matrix. It represents the conditional expected value E(W[i]^s|Z[i]), with s = -1; i.e.,
-latent W[i]^(-1) given the observed Z[i].
+Fisher information matrix. It represents the conditional expected value E(W_i^s|Z_i), with s = -1; i.e.,
+latent W_i^(-1) given the observed Z_i.
 }

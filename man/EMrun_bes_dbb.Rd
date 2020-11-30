@@ -4,18 +4,21 @@
 \alias{EMrun_bes_dbb}
 \title{EMrun_bes_dbb}
 \usage{
-EMrun_bes_dbb(lam, z, v, mu, epsilon)
+EMrun_bes_dbb(lam, z, v, mu, epsilon, link.precision)
 }
 \arguments{
 \item{lam}{initial values for the coefficients in lambda related to the precision parameter.}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
 
 \item{mu}{mean parameter (vector having the same size of z).}
 
 \item{epsilon}{tolerance to controll convergence criterion.}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Vector containing the estimates for lam in the bessel regression.

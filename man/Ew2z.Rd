@@ -18,6 +18,6 @@ vector of expected values.
 }
 \description{
 Auxiliary function required in the calculation of the
-Fisher information matrix. It represents the conditional expected value E(W[i]^s|Z[i]), with s = -2; i.e.,
-latent W[i]^(-2) given the observed Z[i].
+Fisher information matrix. It represents the conditional expected value E(W_i^s|Z_i), with s = -2; i.e.,
+latent W_i^(-2) given the observed Z_i.
 }

@@ -4,20 +4,29 @@
 \alias{infmat_bet}
 \title{infmat_bet}
 \usage{
-infmat_bet(theta, z, x, v)
+infmat_bet(theta, z, x, v, link.mean, link.precision, information = FALSE)
 }
 \arguments{
 \item{theta}{vector of parameters (all coefficients: kappa and lambda).}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
+
+\item{information}{optionally, a logical parameter indicating whether the Fisher's information matrix should be returned}
 }
 \value{
-Vector of standard errors.
+Vector of standard errors or Fisher's information matrix if the parameter 'information' is set to TRUE.
 }
 \description{
 Function to compute standard errors based on the Fisher information matrix for the beta regression.
+This function can also provide the Fisher's information matrix.
 }

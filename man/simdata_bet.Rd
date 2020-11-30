@@ -4,7 +4,7 @@
 \alias{simdata_bet}
 \title{simdata_bet}
 \usage{
-simdata_bet(kap, lam, x, v)
+simdata_bet(kap, lam, x, v, repetitions = 1, link.mean, link.precision)
 }
 \arguments{
 \item{kap}{coefficients kappa related to the mean parameter.}
@@ -14,16 +14,26 @@ simdata_bet(kap, lam, x, v)
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
+
+\item{repetitions}{the number of random draws to be made.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
-Response vector z (with 0 < z[i] < 1).
+a list of response vectors z (with 0 < z_i < 1).
 }
 \description{
 Function to generate synthetic data from the beta regression.
 }
 \examples{
 n = 100; x = cbind(rbinom(n, 1, 0.5), runif(n, -1, 1)); v = runif(n, -1, 1);
-z = simdata_bet(kap = c(1, -1, 0.5), lam = c(0.5,- 0.5), x, v)
+z = simdata_bet(kap = c(1, -1, 0.5), lam = c(0.5,- 0.5), x, v, repetitions = 1,
+link.mean = "logit", link.precision = "log")
+z = unlist(z)
 hist(z, xlim = c(0, 1), prob = TRUE)
 }
 \seealso{

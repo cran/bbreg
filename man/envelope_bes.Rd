@@ -4,7 +4,19 @@
 \alias{envelope_bes}
 \title{envelope_bes}
 \usage{
-envelope_bes(residual, kap, lam, x, v, nsim_env, prob, n, epsilon)
+envelope_bes(
+  residual,
+  kap,
+  lam,
+  x,
+  v,
+  nsim_env,
+  prob,
+  n,
+  epsilon,
+  link.mean,
+  link.precision
+)
 }
 \arguments{
 \item{residual}{character indicating the type of residual ("pearson", "score" or "quantile").}
@@ -24,6 +36,12 @@ envelope_bes(residual, kap, lam, x, v, nsim_env, prob, n, epsilon)
 \item{n}{sample size.}
 
 \item{epsilon}{tolerance parameter used in the Expectation-Maximization algorithm applied to the synthetic data.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Matrix with dimension 2 x n (1st row = upper bound, second row = lower bound).

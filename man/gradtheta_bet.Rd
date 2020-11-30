@@ -4,23 +4,29 @@
 \alias{gradtheta_bet}
 \title{gradtheta_bet}
 \usage{
-gradtheta_bet(theta, phiold, z, x, v)
+gradtheta_bet(theta, phiold, z, x, v, link.mean, link.precision)
 }
 \arguments{
 \item{theta}{vector of parameters (all coefficients).}
 
 \item{phiold}{previous value of the precision parameter (phi).}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Scalar representing the output of this auxiliary gradient function for the beta case.
 }
 \description{
-Function to calculate the gradient required for optimization via \code{optim}.
+Function to calculate the gradient of the Q-function, which is required for optimization via \code{optim}.
 This option is related to the beta regression.
 }

@@ -4,31 +4,52 @@
 \alias{pred_accuracy_bet}
 \title{pred_accuracy_bet}
 \usage{
-pred_accuracy_bet(residual, kap, lam, z, x, v, ntest, predict, epsilon)
+pred_accuracy_bet(
+  residual,
+  kap,
+  lam,
+  z,
+  x,
+  v,
+  ntest,
+  predict,
+  epsilon,
+  link.mean,
+  link.precision
+)
 }
 \arguments{
-\item{residual}{character indicating the type of residual ("pearson", "score" or "quantile").}
+\item{residual}{Character indicating the type of residual ("pearson", "score" or "quantile").}
 
 \item{kap}{coefficients in kappa related to the mean parameter.}
 
 \item{lam}{coefficients in lambda related to the precision parameter.}
 
-\item{z}{response vector with 0 < z[i] < 1.}
+\item{z}{response vector with 0 < z_i < 1.}
 
 \item{x}{matrix containing the covariates for the mean submodel. Each column is a different covariate.}
 
 \item{v}{matrix containing the covariates for the precision submodel. Each column is a different covariate.}
 
-\item{ntest}{number observations in the test set for prediction.}
+\item{ntest}{number of observations in the test set for prediction.}
 
 \item{predict}{number of partitions (training and test sets) to be evaluated.}
 
 \item{epsilon}{tolerance parameter used in the Expectation-Maximization algorithm for the training data set.}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Vector containing the RSS for each partition of the full data set.
 }
 \description{
-Function to calculate the Residual Sum of Suqares for partitions (training and test sets) of
-the data set. Residuals are calculated based on the beta regression.
+Function to calculate the Residual Sum of Squares for partitions (training and test sets) of
+the data set. Residuals are calculated here based on the beta regression.
+}
+\seealso{
+\code{\link{score_residual_bet}}, \code{\link{quantile_residual_bet}}, \code{\link{envelope_bet}}
 }

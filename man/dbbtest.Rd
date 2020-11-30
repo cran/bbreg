@@ -4,17 +4,23 @@
 \alias{dbbtest}
 \title{dbbtest}
 \usage{
-dbbtest(formula, data, epsilon = 10^(-5))
+dbbtest(formula, data, epsilon = 10^(-5), link.mean, link.precision)
 }
 \arguments{
 \item{formula}{symbolic description of the model (set: z ~ x or z ~ x | v); see details below.}
 
 \item{data}{arguments considered in the formula description. This is usually a data frame composed by:
-(i) the response with bounded continuous observations (0 < z[i] < 1),
+(i) the response with bounded continuous observations (0 < z_i < 1),
 (ii) covariates for the mean submodel (columns of matrix x) and
 (iii) covariates for the precision submodel (columns of matrix v).}
 
 \item{epsilon}{tolerance value to control the convergence criterion in the Expectation-Maximization algorithm (default = 10^(-5)).}
+
+\item{link.mean}{a string containing the link function for the mean.
+The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
+
+\item{link.precision}{a string containing the link function the precision parameter.
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
 }
 \value{
 Object of class dbbtest, which is a list containing two elements. The 1st one is a table of terms
@@ -26,7 +32,8 @@ Function to run the discrimination test between beta and bessel regressions (DBB
 }
 \examples{
 # Illustration using the Weather task data set available in the bbreg package.
-dbbtest(agreement ~ priming + eliciting, data = WT)
+dbbtest(agreement ~ priming + eliciting, data = WT,
+link.mean = "logit", link.precision = "identity")
 }
 \seealso{
 \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{simdata_bet}}

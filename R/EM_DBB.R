@@ -3,10 +3,14 @@
 #' @description Function to run the discrimination test between beta and bessel regressions (DBB).
 #' @param formula symbolic description of the model (set: z ~ x or z ~ x | v); see details below.
 #' @param data arguments considered in the formula description. This is usually a data frame composed by:
-#' (i) the response with bounded continuous observations (0 < z[i] < 1),
+#' (i) the response with bounded continuous observations (0 < z_i < 1),
 #' (ii) covariates for the mean submodel (columns of matrix x) and
 #' (iii) covariates for the precision submodel (columns of matrix v).
 #' @param epsilon tolerance value to control the convergence criterion in the Expectation-Maximization algorithm (default = 10^(-5)).
+#' @param link.mean a string containing the link function for the mean.
+#' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Object of class dbbtest, which is a list containing two elements. The 1st one is a table of terms
 #' considered in the decision rule of the test; they are sum(z2/n) = sum_{i=1}^{n}(z_i^2)/n, sum(quasi_mu) = sum_{i=1}^{n}(tilde{mu_i}^2 + tilde{mu_i}(1-tilde{mu_i})/2)
 #' |D_bessel| and |D_beta| as indicated in the main reference. The 2nd term of the list is the name of the selected model (bessel or beta).
@@ -14,10 +18,13 @@
 #' \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{simdata_bet}}
 #' @examples
 #' # Illustration using the Weather task data set available in the bbreg package.
-#' dbbtest(agreement ~ priming + eliciting, data = WT)
+#' dbbtest(agreement ~ priming + eliciting, data = WT,
+#' link.mean = "logit", link.precision = "identity")
 #' @export
-dbbtest = function(formula,data,epsilon=10^(-5))
+dbbtest = function(formula,data,epsilon=10^(-5), link.mean, link.precision)
 {
+  link_mean = stats::make.link(link.mean)
+  link_precision = stats::make.link(link.precision)
   ## Processing call
   eps = match.call()
   if(missing(data)){ data = environment(formula) }
@@ -48,28 +55,28 @@ dbbtest = function(formula,data,epsilon=10^(-5))
   idv = which(apply(v==1,2,sum)!=n) # find non-intercept columns in v.
   #
   if(length(idx) > 0 & length(idx)==nkap){
-    outquasi = stats::glm(z ~ 0 + x[,idx], family = stats::quasi(variance = "mu(1-mu)",link="logit"), start=rep(0,nkap)) }
+    outquasi = stats::glm(z ~ 0 + x[,idx], family = stats::quasi(variance = "mu(1-mu)",link=link.mean), start=rep(0,nkap)) }
   if(length(idx) > 0 & length(idx)<nkap){
-    outquasi = stats::glm(z ~ x[,idx], family = stats::quasi(variance = "mu(1-mu)",link="logit"), start=rep(0,nkap)) }
+    outquasi = stats::glm(z ~ x[,idx], family = stats::quasi(variance = "mu(1-mu)",link=link.mean), start=rep(0,nkap)) }
   if(length(idx) == 0){
-    outquasi = stats::glm(z ~ 1, family = stats::quasi(variance = "mu(1-mu)",link="logit"), start=rep(0,nkap)) }
+    outquasi = stats::glm(z ~ 1, family = stats::quasi(variance = "mu(1-mu)",link=link.mean), start=rep(0,nkap)) }
   kapquasi = outquasi$coefficients
-  muquasi = exp(x%*%kapquasi)/(1+exp(x%*%kapquasi))
+  muquasi = link_mean$linkinv(x%*%kapquasi)
   sumz2 = sum(z^2)/n
   sumquasi = sum(muquasi*(1-muquasi)/2 + muquasi^2)
   selection = 0 # symbol: 0 = beta and 1 = bessel
   if(sumz2 < sumquasi){
     # Set initial values.
-    lam = startvalues(z,x,v)
+    lam = startvalues(z,x,v,link.mean)
     lam = lam[[2]]
     #
-    EM = EMrun_bes_dbb(lam,z,v,mu=muquasi,epsilon)
-    phi = exp(v%*%EM)
+    EM = EMrun_bes_dbb(lam,z,v,mu=muquasi,epsilon,link.precision)
+    phi = link_precision$linkinv(v%*%EM)
     gphi = (1-phi+(phi^2)*exp(phi)*expint_En(phi,order=1))/2
     Wbes = gphi
     #
-    EM = EMrun_bet_dbb(lam,z,v,mu=muquasi,epsilon)
-    phi = exp(v%*%EM)
+    EM = EMrun_bet_dbb(lam,z,v,mu=muquasi,epsilon, link.precision)
+    phi = link_precision$linkinv(v%*%EM)
     gphi = 1/(1+phi)
     Wbet = gphi
     #
@@ -89,15 +96,18 @@ dbbtest = function(formula,data,epsilon=10^(-5))
 
 #############################################################################################
 #' @title Qf_bes_dbb
-#' @description Auxiliary function (adapted for the discrimination test between bessel and beta - DBB) required in the Expectation-Maximization algorithm (Q-function related to the bessel model).
+#' @description Q-function related to the bessel model. This function was adapted for the discrimination test between bessel and beta (DBB) required in the Expectation-Maximization algorithm.
 #' @param lam coefficients in lambda related to the covariates in v.
-#' @param wz parameter wz representing E(1/W[i]|Z[i] = z[i], theta).
-#' @param z response vector with 0 < z[i] < 1.
+#' @param wz parameter wz representing E(1/W_i|Z_i = z_i, theta).
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Scalar representing the output of this auxiliary function for the bessel case.
-Qf_bes_dbb = function(lam,wz,z,v,mu){
-  phi = exp(v%*%lam) # precision parameter
+Qf_bes_dbb = function(lam,wz,z,v,mu,link.precision){
+  link_precision = stats::make.link(link.precision)
+  phi = link_precision$linkinv(v%*%lam) # precision parameter
   out1 = log(mu) + log(1-mu) + 2*log(phi) + phi
   out2 = 0.5*wz*(phi^2)*( ((mu^2)/z) + (((1-mu)^2)/(1-z)) )
   return( sum(out1-out2) )
@@ -105,15 +115,18 @@ Qf_bes_dbb = function(lam,wz,z,v,mu){
 
 #############################################################################################
 #' @title Qf_bet_dbb
-#' @description Auxiliary function (adapted for the discrimination test between bessel and beta - DBB) required in the Expectation-Maximization algorithm (Q-function related to the beta model).
+#' @description Q-function related to the beta model. This function was adapted for the discrimination test between bessel and beta (DBB) required in the Expectation-Maximization algorithm.
 #' @param lam coefficients in lambda related to the covariates in v.
 #' @param phiold previous value of the precision parameter (phi).
-#' @param z response vector with 0 < z[i] < 1.
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Scalar representing the output of this auxiliary function for the beta case.
-Qf_bet_dbb = function(lam,phiold,z,v,mu){
-  phi = exp(v%*%lam) # precision parameter
+Qf_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
+  link_precision = stats::make.link(link.precision)
+  phi = link_precision$linkinv(v%*%lam) # precision parameter
   mu0phi = mu*phi
   mu1phi = (1-mu)*phi
   mu0phi[which(mu0phi <=0)] = 10^(-10)
@@ -126,43 +139,47 @@ Qf_bet_dbb = function(lam,phiold,z,v,mu){
 
 #############################################################################################
 #' @title gradlam_bes_dbb
-#' @description Function (adapted for the discrimination test between bessel and beta - DBB) to calculate the gradient required for optimization via \code{optim}.
+#' @description Gradient of the Q-function (adapted for the discrimination test between bessel and beta - DBB) to calculate the gradient required for optimization via \code{optim}.
 #' This option is related to the bessel regression.
 #' @param lam coefficients in lambda related to the covariates in v.
-#' @param wz parameter wz representing E(1/W[i]|Z[i] = z[i], theta).
-#' @param z response vector with 0 < z[i] < 1.
+#' @param wz parameter wz representing E(1/W_i|Z_i = z_i, theta).
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Scalar representing the output of this auxiliary gradient function for the bessel case.
-gradlam_bes_dbb = function(lam,wz,z,v,mu){
-  nlam = length(lam)
-  phi = exp(v%*%lam)
-  Ulam = array(0,c(1,nlam))
-  aux = (2/phi)+1-wz*phi*( ((mu^2)/z) + (((1-mu)^2)/(1-z)) )
-  aux = aux*phi
-  for(j in 1:nlam){ Ulam[j] = sum(aux*v[,j]) }
+gradlam_bes_dbb = function(lam,wz,z,v,mu,link.precision){
+  link_precision = stats::make.link(link.precision)
+  dphideta = link_precision$mu.eta(v%*%lam)
+  phi = link_precision$linkinv(v%*%lam)
+  aux = (2/phi)+1-wz*phi*(1 +  ((z-mu)^2)/(z*(1-z)) )
+  aux = aux*dphideta
+  Ulam = t(v)%*%aux
   return(Ulam)
 }
 
 #############################################################################################
 #' @title gradlam_bet
-#' @description Function (adapted for the discrimination test between bessel and beta - DBB) to calculate the gradient required for optimization via \code{optim}.
+#' @description Gradient of the Q-function (adapted for the discrimination test between bessel and beta - DBB) to calculate the gradient required for optimization via \code{optim}.
 #' This option is related to the beta regression.
 #' @param lam coefficients in lambda related to the covariates in v.
 #' @param phiold previous value of the precision parameter (phi).
-#' @param z response vector with 0 < z[i] < 1.
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Scalar representing the output of this auxiliary gradient function for the beta case.
-gradlam_bet_dbb = function(lam,phiold,z,v,mu){
-  nlam = length(lam)
-  phi = exp(v%*%lam)
-  Ulam = array(0,c(1,nlam))
+gradlam_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
+  link_precision = stats::make.link(link.precision)
+  phi = link_precision$linkinv(v%*%lam)
+  dphideta = link_precision$mu.eta(v%*%lam)
   aux = mu*(log(z)-log(1-z)) +digamma(phiold)
   aux = aux +log(1-z)-mu*digamma(mu*phi)
   aux = aux -(1-mu)*digamma((1-mu)*phi)
-  aux = aux*phi
-  for(j in 1:nlam){ Ulam[j] = sum(aux*v[,j]) }
+  aux = aux*dphideta
+  Ulam = t(v)%*%aux
   return(Ulam)
 }
 
@@ -170,13 +187,16 @@ gradlam_bet_dbb = function(lam,phiold,z,v,mu){
 #' @title EMrun_bes_dbb
 #' @description Function (adapted for the discrimination test between bessel and beta - DBB) to run the Expectation-Maximization algorithm for the bessel regression.
 #' @param lam initial values for the coefficients in lambda related to the precision parameter.
-#' @param z response vector with 0 < z[i] < 1.
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param epsilon tolerance to controll convergence criterion.
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Vector containing the estimates for lam in the bessel regression.
-EMrun_bes_dbb = function(lam,z,v,mu,epsilon){
-  nlam = ncol(v); phi = exp(v%*%lam);
+EMrun_bes_dbb = function(lam,z,v,mu,epsilon,link.precision){
+  link_precision = stats::make.link(link.precision)
+  phi = link_precision$linkinv(v%*%lam) # phi precision parameter.
   count = 0
   repeat{
     lam_r = lam
@@ -184,12 +204,13 @@ EMrun_bes_dbb = function(lam,z,v,mu,epsilon){
     ### E step ------------------------------
     wz_r = Ew1z(z,mu,phi_r)
     ### M step ------------------------------
-    M = stats::optim(par=lam, fn=Qf_bes_dbb, gr=gradlam_bes_dbb, wz=wz_r, z=z, v=v, mu=mu, control=list(fnscale=-1), method='BFGS')
+    M = stats::optim(par=lam, fn=Qf_bes_dbb, gr=gradlam_bes_dbb, wz=wz_r, z=z, v=v,
+                     mu=mu,link.precision = link.precision, control=list(fnscale=-1), method='L-BFGS-B')
     lam = M$par
-    phi = exp(v%*%lam)
+    phi = link_precision$linkinv(v%*%lam)
     # Compute Q -----------------------------
-    Q_r = Qf_bes_dbb(lam_r,wz_r,z,v,mu);
-    Q = Qf_bes_dbb(lam,wz_r,z,v,mu);
+    Q_r = Qf_bes_dbb(lam_r,wz_r,z,v,mu,link.precision);
+    Q = Qf_bes_dbb(lam,wz_r,z,v,mu,link.precision);
     ### Convergence criterion ---------------
     term1 = sqrt(sum((lam-lam_r)^2));
     term2 = abs(Q - Q_r);
@@ -206,25 +227,29 @@ EMrun_bes_dbb = function(lam,z,v,mu,epsilon){
 #' @title EMrun_bet_dbb
 #' @description Function (adapted for the discrimination test between bessel and beta - DBB) to run the Expectation-Maximization algorithm for the beta regression.
 #' @param lam initial values for the coefficients in lambda related to the precision parameter.
-#' @param z response vector with 0 < z[i] < 1.
+#' @param z response vector with 0 < z_i < 1.
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param epsilon tolerance to controll convergence criterion.
+#' @param link.precision a string containing the link function the precision parameter.
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
 #' @return Vector containing the estimates for lam in the beta regression.
-EMrun_bet_dbb = function(lam,z,v,mu,epsilon){
-  nlam = ncol(v); phi = exp(v%*%lam);
+EMrun_bet_dbb = function(lam,z,v,mu,epsilon,link.precision){
+  link_precision = stats::make.link(link.precision)
+  phi = link_precision$linkinv(v%*%lam) # phi precision parameter.
   count = 0
   repeat{
     lam_r = lam
     phi_r = phi
     ### E step ------------------------------
     ### M step ------------------------------
-    M = stats::optim(par = lam, fn = Qf_bet_dbb, gr = gradlam_bet_dbb, phiold=phi_r, z=z ,v=v, mu=mu, control=list(fnscale=-1), method = 'BFGS')
+    M = stats::optim(par = lam, fn = Qf_bet_dbb, gr = gradlam_bet_dbb, phiold=phi_r, z=z ,v=v, mu=mu,
+                     link.precision = link.precision, control=list(fnscale=-1), method = 'L-BFGS-B')
     lam = M$par
-    phi = exp(v%*%lam)
+    phi = link_precision$linkinv(v%*%lam)
     # Compute Q -----------------------------
-    Q_r = Qf_bet_dbb(lam_r,phi_r,z,v,mu);
-    Q = Qf_bet_dbb(lam,phi_r,z,v,mu);
+    Q_r = Qf_bet_dbb(lam_r,phi_r,z,v,mu,link.precision);
+    Q = Qf_bet_dbb(lam,phi_r,z,v,mu,link.precision);
     ### Convergence criterion ---------------
     term1 = sqrt(sum((lam-lam_r)^2));
     term2 = abs(Q - Q_r);
