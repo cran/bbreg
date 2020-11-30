@@ -32,5 +32,5 @@ predict(fit, new_data = new_data_example)
 predict(fit, new_data = new_data_example, type = "precision")}
 }
 \seealso{
-\code{\link{fitted}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}
+\code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}
 }

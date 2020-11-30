@@ -20,5 +20,5 @@ fit = bbreg(agreement ~ priming + eliciting, data = WT)
 fit}
 }
 \seealso{
-\code{\link{fitted}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}, \code{\link{predict}}
+\code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 }

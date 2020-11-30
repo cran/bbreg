@@ -23,7 +23,7 @@
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision optionally, a string containing the link function the precision parameter. If omitted and the only precision 
 #' covariate is the intercept, the identity link function will be used, if omitted and there is a precision covariate other than the 
-#' intercept, the 'log' link function will be used. The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' intercept, the 'log' link function will be used. The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Object of class \pkg{bbreg} containing the outputs from the model fit (bessel or beta regression).
 #'
 #' @details The bessel regression originates from a class of normalized inverse-Gaussian (N-IG) process introduced in \emph{Lijoi et al. (2005)}
@@ -85,7 +85,7 @@
 #' DOI:10.1198/016214505000000132 (\href{https://www.tandfonline.com/doi/abs/10.1198/016214505000000132}{Lijoi et al.; 2005})
 #'
 #' @seealso
-#' \code{\link{summary}}, \code{\link{plot}}, \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{dbbtest}}, \code{\link{simdata_bet}}, \code{\link[Formula]{Formula}}
+#' \code{\link{summary.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{dbbtest}}, \code{\link{simdata_bet}}, \code{\link[Formula]{Formula}}
 #'
 #' @examples
 #' # Example with artificial data.
@@ -115,7 +115,7 @@
 #' summary(fit5)}
 #' @export
 bbreg = function(formula,data,link.mean=c("logit","probit", "cauchit", "cloglog"),
-                 link.precision=c("identity", "log", "sqrt", "1/precision^2", "inverse"),
+                 link.precision=c("identity", "log", "sqrt", "inverse"),
                  model=NULL,residual=NULL,envelope=0,prob=0.95,predict=0,ptest=0.25,epsilon=10^(-5))
 {
   ## Processing call
@@ -209,7 +209,7 @@ bbreg = function(formula,data,link.mean=c("logit","probit", "cauchit", "cloglog"
     }
 
   }
-  possible_link_precision = c("identity", "log", "sqrt", "1/precision^2", "inverse")
+  possible_link_precision = c("identity", "log", "sqrt", "inverse")
 
   if(!(link.precision %in% possible_link_precision)){
     stop(paste0("link function for the precision parameter must be one of ", possible_link_precision))

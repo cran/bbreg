@@ -8,7 +8,7 @@ bbreg(
   formula,
   data,
   link.mean = c("logit", "probit", "cauchit", "cloglog"),
-  link.precision = c("identity", "log", "sqrt", "1/precision^2", "inverse"),
+  link.precision = c("identity", "log", "sqrt", "inverse"),
   model = NULL,
   residual = NULL,
   envelope = 0,
@@ -31,7 +31,7 @@ The possible link functions for the mean are "logit","probit", "cauchit", "clogl
 
 \item{link.precision}{optionally, a string containing the link function the precision parameter. If omitted and the only precision
 covariate is the intercept, the identity link function will be used, if omitted and there is a precision covariate other than the
-intercept, the 'log' link function will be used. The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
+intercept, the 'log' link function will be used. The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".}
 
 \item{model}{character ("bessel" or "beta") indicating the type of model to be fitted. The default is NULL,
 meaning that a discrimination test must be applied to select the model.}
@@ -146,5 +146,5 @@ DOI:10.18637/jss.v034.i02 (\href{https://www.jstatsoft.org/article/view/v034i02}
 DOI:10.1198/016214505000000132 (\href{https://www.tandfonline.com/doi/abs/10.1198/016214505000000132}{Lijoi et al.; 2005})
 }
 \seealso{
-\code{\link{summary}}, \code{\link{plot}}, \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{dbbtest}}, \code{\link{simdata_bet}}, \code{\link[Formula]{Formula}}
+\code{\link{summary.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{dbbtest}}, \code{\link{simdata_bet}}, \code{\link[Formula]{Formula}}
 }

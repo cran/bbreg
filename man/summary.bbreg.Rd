@@ -20,5 +20,5 @@ fit = bbreg(agreement ~ priming + eliciting|priming, data = WT)
 summary(fit)}
 }
 \seealso{
-\code{\link{fitted}}, \code{\link{plot}}, \code{\link{predict}}
+\code{\link{fitted.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 }

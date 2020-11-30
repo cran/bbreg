@@ -23,5 +23,5 @@ fitted(fit)
 fitted(fit, type = "precision")}
 }
 \seealso{
-\code{\link{predict}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}
+\code{\link{predict.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}
 }

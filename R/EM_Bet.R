@@ -8,7 +8,7 @@
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Hessian of the Q-function.
 
 D2Q_Obs_Fisher_bet = function(theta,z,x,v,link.mean,link.precision){
@@ -58,7 +58,7 @@ D2Q_Obs_Fisher_bet = function(theta,z,x,v,link.mean,link.precision){
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return matrix given by the conditional expectation of the gradient of the Q-function and its tranpose.
 
 DQ2_Obs_Fisher_bet = function(theta,z,x,v,link.mean,link.precision){
@@ -110,7 +110,7 @@ DQ2_Obs_Fisher_bet = function(theta,z,x,v,link.mean,link.precision){
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @param information optionally, a logical parameter indicating whether the Fisher's information matrix should be returned
 #' @return Vector of standard errors or Fisher's information matrix if the parameter 'information' is set to TRUE.
 
@@ -140,7 +140,7 @@ infmat_bet = function(theta,z,x,v,link.mean,link.precision,information=FALSE)
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary function for the beta case.
 Qf_bet = function(theta,phiold,z,x,v,link.mean,link.precision)
 {
@@ -176,7 +176,7 @@ Qf_bet = function(theta,phiold,z,x,v,link.mean,link.precision)
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary gradient function for the beta case.
 gradtheta_bet = function(theta,phiold,z,x,v,link.mean,link.precision)
 {
@@ -216,7 +216,7 @@ gradtheta_bet = function(theta,phiold,z,x,v,link.mean,link.precision)
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Vector containing the estimates for kappa and lambda in the beta regression.
 EMrun_bet = function(kap,lam,z,x,v,epsilon,link.mean,link.precision){
   n = length(z)
@@ -294,7 +294,7 @@ EMrun_bet = function(kap,lam,z,x,v,epsilon,link.mean,link.precision){
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return a list of response vectors z (with 0 < z_i < 1).
 #' @seealso
 #' \code{\link{simdata_bes}}, \code{\link{dbessel}}, \code{\link{dbbtest}}
@@ -348,7 +348,7 @@ simdata_bet <- function(kap,lam,x,v,repetitions=1,link.mean,link.precision)
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @seealso
 #' \code{\link{score_residual_bet}}, \code{\link{quantile_residual_bet}}, \code{\link{pred_accuracy_bet}}
 #' @return Matrix with dimension 2 x n (1st row = upper bound, second row = lower bound).
@@ -408,7 +408,7 @@ envelope_bet <- function(residual,kap,lam,x,v,nsim_env,prob,n,epsilon,link.mean,
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @seealso
 #' \code{\link{score_residual_bet}}, \code{\link{quantile_residual_bet}}, \code{\link{envelope_bet}}
 #' @return Vector containing the RSS for each partition of the full data set.
@@ -455,7 +455,7 @@ pred_accuracy_bet = function(residual,kap,lam,z,x,v,ntest,predict,epsilon,link.m
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @seealso
 #' \code{\link{quantile_residual_bet}}
 #' @return Vector containing the score residuals.
@@ -482,7 +482,7 @@ score_residual_bet = function(kap,lam,z,x,v,nsim_score=100,link.mean,link.precis
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @references DOI:10.1080/03610918.2017.1381740 (\href{https://www.tandfonline.com/doi/abs/10.1080/03610918.2017.1381740}{Pereira; 2019})
 #' @seealso
 #' \code{\link{score_residual_bet}}

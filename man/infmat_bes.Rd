@@ -19,7 +19,7 @@ infmat_bes(theta, z, x, v, link.mean, link.precision, information = FALSE)
 The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".}
 
 \item{link.precision}{a string containing the link function the precision parameter.
-The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".}
+The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".}
 
 \item{information}{optionally, a logical parameter indicating whether the Fisher's information matrix should be returned}
 }

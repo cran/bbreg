@@ -2,7 +2,7 @@ Package: bbreg
 Type: Package
 Title: Bessel and Beta Regressions via Expectation-Maximization
         Algorithm for Continuous Bounded Data
-Version: 2.0.0
+Version: 2.0.1
 Authors@R: 
     c(person(given = "Vinicius",
              family = "Mayrink",
@@ -30,9 +30,9 @@ RoxygenNote: 7.1.1
 NeedsCompilation: no
 Suggests: rmarkdown, knitr
 VignetteBuilder: knitr
-Packaged: 2020-11-30 10:45:23 UTC; andre
+Packaged: 2020-11-30 14:06:35 UTC; andre
 Author: Vinicius Mayrink [cre, aut] (<https://orcid.org/0000-0002-5683-8326>),
   Alexandre B. Simas [aut] (<https://orcid.org/0000-0003-2562-2829>),
   Wagner Barreto-Souza [aut] (<https://orcid.org/0000-0003-0831-7881>)
 Repository: CRAN
-Date/Publication: 2020-11-30 11:10:02 UTC
+Date/Publication: 2020-11-30 15:50:02 UTC

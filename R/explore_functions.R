@@ -15,12 +15,12 @@
 #' the plot will be with the simulated envelopes); Plot 3: Fitted means vs. Response;
 #' Plot 4: Residuals vs. Fitted means.
 #' @param ask logical; if \code{TRUE}, the user is aked before each plot.
+#' @param main character; title to be placed at each plot additionally (and above) all captions.
 #' @param qqline logical; if \code{TRUE} and the fit does *not* contain simulated
 #' envelopes, a qqline will be added to the normal Q-Q plot.
-#' simulated envelopes.
 #' @param ... graphical parameters to be passed.
 #' @seealso
-#' \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{fitted}}, \code{\link{predict}}
+#' \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{fitted.bbreg}}, \code{\link{predict.bbreg}}
 #' @examples
 #' \donttest{
 #' n = 100; x = cbind(rbinom(n, 1, 0.5), runif(n, -1, 1)); v = runif(n, -1, 1);
@@ -32,7 +32,7 @@
 #' plot(fit, which = 2)
 #' plot(fit, which = c(1,4), ask = FALSE)}
 #' @export
-plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
+plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, main = "", qqline = TRUE, ...)
 {
   if(length(which)==1){
     ask = FALSE
@@ -51,7 +51,7 @@ plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
     ylab = residualname
     xlab  = paste0("Index\n bbreg(",call_mod,")")
     title_1 = paste0(residualname," vs Index - ",name)
-    graphics::plot(res, xlab= xlab, ylab=ylab, font.main = 1)
+    graphics::plot(res, xlab= xlab, ylab=ylab, font.main = 1, main = main)
     graphics::abline(0,0, lty=3)
     graphics::mtext(title_1, side = 3)
   }
@@ -73,8 +73,8 @@ plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
       title_2 = paste0("Q-Q Plot - ", name)
     }
     RR = stats::qqnorm(res,xlab=xlab,ylab=ylab,xlim=xlim,ylim=ylim,
-                       pch="", main = "", cex.lab=cex.lab,cex.axis=cex.axis,
-                       font.main = 1)
+                       pch="", cex.lab=cex.lab,cex.axis=cex.axis,
+                       font.main = 1,main=main)
     if(is.null(env)==FALSE){
       aux = sort(RR$x)
       graphics::lines(aux,env[1,],col=grDevices::rgb(0.7,0.7,0.7))
@@ -98,7 +98,7 @@ plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
     title_3 = paste0("Response vs Fitted means - ",name)
     ylab = "Response"
     xlab  = paste0("Predicted values\n bbreg(",call_mod,")")
-    graphics::plot(mu_est, obs, xlab = xlab, ylab = ylab)
+    graphics::plot(mu_est, obs, xlab = xlab, ylab = ylab,main=main)
     graphics::abline(0,1, lty=3)
     graphics::mtext(title_3, side = 3)
   }
@@ -110,7 +110,7 @@ plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
     title_4 = paste0(residualname," vs Fitted means - ",name)
     ylab = paste0(residualname," residuals")
     xlab  = paste0("Predicted values\n bbreg(",call_mod,")")
-    graphics::plot(mu_est, res, xlab = xlab, ylab = ylab)
+    graphics::plot(mu_est, res, xlab = xlab, ylab = ylab,main=main)
     graphics::abline(0,0, lty=3)
     graphics::mtext(title_4, side = 3)
   }
@@ -125,7 +125,7 @@ plot.bbreg = function(x,which = c(1,2,3,4), ask = TRUE, qqline = TRUE, ...)
 #' @param type the type of variable to get the fitted values. The default is the "response" type, which provided the estimated values for the means. The type "link" provides the estimates for the linear predictor of the mean. The type "precision" provides estimates for the precision parameters whereas the type "variance" provides estimates for the variances.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso
-#' \code{\link{predict}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}
+#' \code{\link{predict.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}
 #' @examples
 #' \donttest{
 #' fit = bbreg(agreement ~ priming + eliciting, data = WT)
@@ -178,7 +178,7 @@ fitted.bbreg <- function(object, type = c("response", "link", "precision", "vari
 #' @param type the type of prediction. The default is the "response" type, which provided the estimated values for the means. The type "link" provides the estimates for the linear predictor. The type "precision" provides estimates for the precision parameters whereas the type "variance" provides estimates for the variances.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso
-#' \code{\link{fitted}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}
+#' \code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}
 #' @examples
 #' \donttest{
 #' fit = bbreg(agreement ~ priming + eliciting, data = WT)
@@ -254,7 +254,7 @@ predict.bbreg <- function(object, newdata=NULL, type = c("response", "link", "pr
 #' @param x object of class "bbreg" containing results from the fitted model.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso
-#' \code{\link{fitted}}, \code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{plot}}, \code{\link{predict}}
+#' \code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 #' @examples
 #' \donttest{
 #' fit = bbreg(agreement ~ priming + eliciting, data = WT)
@@ -298,7 +298,7 @@ print.bbreg <- function(x, ...){
 #' @param parameters a string to determine which coefficients should be extracted: 'all' extracts all coefficients, 'mean' extracts the coefficients of the mean parameters and 'precision' extracts coefficients of the precision parameters.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso
-#' \code{\link{fitted}}, \code{\link{summary}}, \code{\link{vcov}}, \code{\link{plot}}, \code{\link{predict}}
+#' \code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 #' @examples
 #' \donttest{
 #' fit = bbreg(agreement ~ priming + eliciting, data = WT)
@@ -409,7 +409,7 @@ vcov.bbreg <- function(object, parameters = c("all", "mean", "precision"),...){
 #' @param object an object of class "bbreg" containing results from the fitted model.
 #' @param ... further arguments passed to or from other methods.
 #' @seealso
-#' \code{\link{fitted}}, \code{\link{plot}}, \code{\link{predict}}
+#' \code{\link{fitted.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 #' @examples
 #' \donttest{
 #' fit = bbreg(agreement ~ priming + eliciting|priming, data = WT)
@@ -526,7 +526,7 @@ d2mudeta2 = function(link.mean, mu){
 #' @title d2phideta2
 #' @description Function to obtain the second derivatives of the precision parameter with respect to the linear predictor.
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @param phi precision parameter.
 
 d2phideta2 = function(link.precision, phi){

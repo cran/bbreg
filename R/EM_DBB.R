@@ -10,7 +10,7 @@
 #' @param link.mean a string containing the link function for the mean.
 #' The possible link functions for the mean are "logit","probit", "cauchit", "cloglog".
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Object of class dbbtest, which is a list containing two elements. The 1st one is a table of terms
 #' considered in the decision rule of the test; they are sum(z2/n) = sum_{i=1}^{n}(z_i^2)/n, sum(quasi_mu) = sum_{i=1}^{n}(tilde{mu_i}^2 + tilde{mu_i}(1-tilde{mu_i})/2)
 #' |D_bessel| and |D_beta| as indicated in the main reference. The 2nd term of the list is the name of the selected model (bessel or beta).
@@ -103,7 +103,7 @@ dbbtest = function(formula,data,epsilon=10^(-5), link.mean, link.precision)
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary function for the bessel case.
 Qf_bes_dbb = function(lam,wz,z,v,mu,link.precision){
   link_precision = stats::make.link(link.precision)
@@ -122,7 +122,7 @@ Qf_bes_dbb = function(lam,wz,z,v,mu,link.precision){
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary function for the beta case.
 Qf_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
   link_precision = stats::make.link(link.precision)
@@ -147,7 +147,7 @@ Qf_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary gradient function for the bessel case.
 gradlam_bes_dbb = function(lam,wz,z,v,mu,link.precision){
   link_precision = stats::make.link(link.precision)
@@ -169,7 +169,7 @@ gradlam_bes_dbb = function(lam,wz,z,v,mu,link.precision){
 #' @param v matrix containing the covariates for the precision submodel. Each column is a different covariate.
 #' @param mu mean parameter (vector having the same size of z).
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Scalar representing the output of this auxiliary gradient function for the beta case.
 gradlam_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
   link_precision = stats::make.link(link.precision)
@@ -192,7 +192,7 @@ gradlam_bet_dbb = function(lam,phiold,z,v,mu,link.precision){
 #' @param mu mean parameter (vector having the same size of z).
 #' @param epsilon tolerance to controll convergence criterion.
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Vector containing the estimates for lam in the bessel regression.
 EMrun_bes_dbb = function(lam,z,v,mu,epsilon,link.precision){
   link_precision = stats::make.link(link.precision)
@@ -232,7 +232,7 @@ EMrun_bes_dbb = function(lam,z,v,mu,epsilon,link.precision){
 #' @param mu mean parameter (vector having the same size of z).
 #' @param epsilon tolerance to controll convergence criterion.
 #' @param link.precision a string containing the link function the precision parameter.
-#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "1/precision^2", "inverse".
+#' The possible link functions for the precision parameter are "identity", "log", "sqrt", "inverse".
 #' @return Vector containing the estimates for lam in the beta regression.
 EMrun_bet_dbb = function(lam,z,v,mu,epsilon,link.precision){
   link_precision = stats::make.link(link.precision)

@@ -4,7 +4,7 @@
 \alias{plot.bbreg}
 \title{plot.bbreg}
 \usage{
-\method{plot}{bbreg}(x, which = c(1, 2, 3, 4), ask = TRUE, qqline = TRUE, ...)
+\method{plot}{bbreg}(x, which = c(1, 2, 3, 4), ask = TRUE, main = "", qqline = TRUE, ...)
 }
 \arguments{
 \item{x}{object of class "bbreg" containing results from the fitted model.
@@ -17,9 +17,10 @@ Plot 4: Residuals vs. Fitted means.}
 
 \item{ask}{logical; if \code{TRUE}, the user is aked before each plot.}
 
+\item{main}{character; title to be placed at each plot additionally (and above) all captions.}
+
 \item{qqline}{logical; if \code{TRUE} and the fit does \emph{not} contain simulated
-envelopes, a qqline will be added to the normal Q-Q plot.
-simulated envelopes.}
+envelopes, a qqline will be added to the normal Q-Q plot.}
 
 \item{...}{graphical parameters to be passed.}
 }
@@ -38,5 +39,5 @@ plot(fit, which = 2)
 plot(fit, which = c(1,4), ask = FALSE)}
 }
 \seealso{
-\code{\link{summary}}, \code{\link{coef}}, \code{\link{vcov}}, \code{\link{fitted}}, \code{\link{predict}}
+\code{\link{summary.bbreg}}, \code{\link{coef.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{fitted.bbreg}}, \code{\link{predict.bbreg}}
 }

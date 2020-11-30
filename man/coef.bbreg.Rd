@@ -23,5 +23,5 @@ coef(fit)
 coef(fit, parameters = "precision")}
 }
 \seealso{
-\code{\link{fitted}}, \code{\link{summary}}, \code{\link{vcov}}, \code{\link{plot}}, \code{\link{predict}}
+\code{\link{fitted.bbreg}}, \code{\link{summary.bbreg}}, \code{\link{vcov.bbreg}}, \code{\link{plot.bbreg}}, \code{\link{predict.bbreg}}
 }
