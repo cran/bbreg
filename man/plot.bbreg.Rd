@@ -10,7 +10,7 @@
 \item{x}{object of class "bbreg" containing results from the fitted model.
 If the model is fitted with envelope = 0, the Q-Q plot will be produced without envelopes.}
 
-\item{which}{a number of a vector of numbers between 1 and 4. Plot 1:
+\item{which}{a number of a vector of numbers between 1 and 4. Plot 1: 
 Residuals vs. Index; Plot 2: Q-Q Plot (if the fit contains simulated envelopes,
 the plot will be with the simulated envelopes); Plot 3: Fitted means vs. Response;
 Plot 4: Residuals vs. Fitted means.}
@@ -19,7 +19,7 @@ Plot 4: Residuals vs. Fitted means.}
 
 \item{main}{character; title to be placed at each plot additionally (and above) all captions.}
 
-\item{qqline}{logical; if \code{TRUE} and the fit does \emph{not} contain simulated
+\item{qqline}{logical; if \code{TRUE} and the fit does *not* contain simulated
 envelopes, a qqline will be added to the normal Q-Q plot.}
 
 \item{...}{graphical parameters to be passed.}

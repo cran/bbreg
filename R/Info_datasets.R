@@ -66,7 +66,7 @@
 #' @references
 #' arXiv:2003.05157 (\href{https://arxiv.org/abs/2003.05157}{Barreto-Souza, Mayrink and Simas; 2020})
 #'
-#' DOI:10.1249/00005768-198504000-00037 (\href{http://dx.doi.org/10.1249/00005768-198504000-00037}{Penrose et al.; 1985})
+#' DOI:10.1249/00005768-198504000-00037 (Penrose et al.; 1985)
 #'
 #' DOI:10.4236/ojs.2016.61010 (\href{https://www.scirp.org/journal/paperinforcitation.aspx?paperid=63650}{Brimacombe; 2016})
 #'

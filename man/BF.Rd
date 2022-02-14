@@ -7,20 +7,20 @@
 \format{
 Data frame containing 252 observations on 14 variables.
 \describe{
-\item{bodyfat}{percentage of body fat obtained through underwater weighting.}
-\item{age}{age in years/100.}
-\item{weight}{weight in lbs/100.}
-\item{height}{height in inches/100.}
-\item{neck}{neck circumference in cm/100.}
-\item{chest}{chest circumference in cm/100.}
-\item{abdomen}{abdomen circumference in cm/100.}
-\item{hip}{hip circumference in cm/100.}
-\item{thigh}{thigh circumference in cm/100.}
-\item{knee}{knee circumference in cm/100.}
-\item{ankle}{ankle circumference in cm/100.}
-\item{biceps}{biceps circumference in cm/100.}
-\item{forearm}{forearm circumference in cm/100.}
-\item{wrist}{wrist circumference in cm/100.}
+  \item{bodyfat}{percentage of body fat obtained through underwater weighting.}
+  \item{age}{age in years/100.}
+  \item{weight}{weight in lbs/100.}
+  \item{height}{height in inches/100.}
+  \item{neck}{neck circumference in cm/100.}
+  \item{chest}{chest circumference in cm/100.}
+  \item{abdomen}{abdomen circumference in cm/100.}
+  \item{hip}{hip circumference in cm/100.}
+  \item{thigh}{thigh circumference in cm/100.}
+  \item{knee}{knee circumference in cm/100.}
+  \item{ankle}{ankle circumference in cm/100.}
+  \item{biceps}{biceps circumference in cm/100.}
+  \item{forearm}{forearm circumference in cm/100.}
+  \item{wrist}{wrist circumference in cm/100.}
 }
 }
 \source{
@@ -40,7 +40,7 @@ data(BF)
 \references{
 arXiv:2003.05157 (\href{https://arxiv.org/abs/2003.05157}{Barreto-Souza, Mayrink and Simas; 2020})
 
-DOI:10.1249/00005768-198504000-00037 (\href{http://dx.doi.org/10.1249/00005768-198504000-00037}{Penrose et al.; 1985})
+DOI:10.1249/00005768-198504000-00037 (Penrose et al.; 1985)
 
 DOI:10.4236/ojs.2016.61010 (\href{https://www.scirp.org/journal/paperinforcitation.aspx?paperid=63650}{Brimacombe; 2016})
 }

@@ -7,8 +7,8 @@
 \format{
 Data frame containing 166 observations on 2 variables.
 \describe{
-\item{stress}{score, linearly transformed to the open unit interval.}
-\item{anxiety}{score, linearly transformed to the open unit interval.}
+  \item{stress}{score, linearly transformed to the open unit interval.}
+  \item{anxiety}{score, linearly transformed to the open unit interval.}
 }
 }
 \source{

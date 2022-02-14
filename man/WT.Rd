@@ -7,9 +7,9 @@
 \format{
 Data frame containing 345 observations on 3 variables.
 \describe{
-\item{agreement}{probability or the average between two probabilities indicated by each individual.}
-\item{priming}{categorical covariate (0 = two-fold, 1 = seven-fold).}
-\item{eliciting}{categorical covariate (0 = precise, 1 = imprecise).}
+  \item{agreement}{probability or the average between two probabilities indicated by each individual.}
+  \item{priming}{categorical covariate (0 = two-fold, 1 = seven-fold).}
+  \item{eliciting}{categorical covariate (0 = precise, 1 = imprecise).}
 }
 }
 \source{

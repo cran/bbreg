@@ -39,7 +39,7 @@
 #' "log(phi_i) = v_i^T lambda", where "kappa' = (kappa_1,...,kappa_p)" and "lambda' = (lambda_1,...,lambda[q])" are real valued vectors.
 #' The terms "x_i^T" and "v_i^T" represent, respectively, the i-th row of the matrices "x" (\emph{nxp}) and "v" (\emph{nxq}) containing covariates in their columns
 #' ("x_{i,1}" and "v_{i,1}" may be 1 to handle intercepts). As it can be seen, this regression model has two levels with covariates explaining the mean
-#' "mu_i" and the parameter "phi_i". For more details about the bessel regression see \emph{Barreto-Souza, Mayrink and Simas (2020)}.
+#' "mu_i" and the parameter "phi_i". For more details about the bessel regression see \emph{Barreto-Souza, Mayrink and Simas (2022)} and \emph{Barreto-Souza, Mayrink and Simas (2020)}.
 #'
 #' This package implements an Expectation Maximization (EM) algorithm to fit the bessel regression. The full EM approach proposed in \emph{Barreto-Souza and Simas (2017)} for the beta
 #' regression is also available here. Fitting the beta regression via EM-algorithm is a major difference between the present package \pkg{bbreg} and the
@@ -57,7 +57,7 @@
 #' The type of model to be fitted ("bessel" or "beta") can be specified through the argument "model" of
 #' \pkg{bbreg}. If the user does not specify the model, the package will automatically apply a discrimination 
 #' test (DBB - Discrimination between Bessel and Beta),
-#' developed in \emph{Barreto-Souza, Mayrink and Simas (2020)}, to select the most appropriate model for the given 
+#' developed in \emph{Barreto-Souza, Mayrink and Simas (2022)} and \emph{Barreto-Souza, Mayrink and Simas (2020)}, to select the most appropriate model for the given 
 #' data set. In this case, some quantities related to the DBB are included in the final output; they are: 
 #' "sum(Z2/n)" = mean of z_i^2, "sum(quasi_mu)" = sum (for i = 1,...,n) of muq_i + muq_i(1-muq_i)/2, 
 #' with muq_i being the quasi-likelihood estimator of mu_i and, finally, the quantities "|D_bessel|" and 
@@ -76,6 +76,8 @@
 #' proportion \code{ptest} for the test set (large \code{ptest} is not recommended).
 #'
 #' @references
+#' DOI:10.1111/anzs.12354 (\href{https://onlinelibrary.wiley.com/doi/10.1111/anzs.12354}{Barreto-Souza, Mayrink and Simas; 2022})
+#' 
 #' arXiv:2003.05157 (\href{https://arxiv.org/abs/2003.05157}{Barreto-Souza, Mayrink and Simas; 2020})
 #'
 #' DOI:10.1080/00949655.2017.1350679 (\href{https://www.tandfonline.com/doi/abs/10.1080/00949655.2017.1350679?journalCode=gscs20}{Barreto-Souza and Simas; 2017})
